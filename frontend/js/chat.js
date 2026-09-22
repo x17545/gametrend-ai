@@ -90,6 +90,9 @@ async function sendChat(message) {
     });
 
     addMessage("assistant", result.answer);
+
+    await loadConversations();
+    
   } catch (error) {
     addMessage(
       "assistant",
