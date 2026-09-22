@@ -53,10 +53,13 @@ function renderConversation(conversation) {
       chatMessages.scrollTop =
         chatMessages.scrollHeight;
 
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+      document
+        .querySelector(".analyst-console")
+        .scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+
     } catch (error) {
       alert(
         `대화 불러오기 실패: ${error.message}`

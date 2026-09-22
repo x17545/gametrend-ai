@@ -343,8 +343,8 @@ h2 {
     grid-template-columns: 1fr;
   }
 
-  .topbar {
-    flex-direction: column;
+  .dashboard-column {
+    gap: 18px;
   }
 }
 
@@ -594,4 +594,1633 @@ h2 {
   word-break: keep-all;
   overflow-wrap: break-word;
   white-space: normal;
+}
+
+/* ======================================================
+   GAMETREND TELEMETRY UI
+   ====================================================== */
+
+:root {
+  --gt-bg: #070b10;
+  --gt-panel: #0b1118;
+  --gt-panel-soft: #0e1720;
+  --gt-line: #1b2a36;
+  --gt-line-bright: #29404f;
+
+  --gt-text: #e9f2f8;
+  --gt-muted: #6f8492;
+
+  --gt-cyan: #27d8ff;
+  --gt-cyan-soft: rgba(39, 216, 255, 0.1);
+
+  --gt-green: #79f2a6;
+}
+
+body {
+  background:
+    linear-gradient(rgba(39, 216, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(39, 216, 255, 0.018) 1px, transparent 1px),
+    radial-gradient(circle at 20% 0%, #10202b 0, transparent 32%),
+    var(--gt-bg);
+
+  background-size:
+    36px 36px,
+    36px 36px,
+    auto,
+    auto;
+
+  color: var(--gt-text);
+}
+
+.app-shell {
+  width: min(1500px, calc(100% - 48px));
+  padding-top: 28px;
+}
+
+
+/* HEADER */
+
+.telemetry-header {
+  position: relative;
+  align-items: flex-end;
+  padding: 8px 0 22px;
+  border-bottom: 1px solid var(--gt-line);
+}
+
+.telemetry-header::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+
+  width: 180px;
+  height: 2px;
+
+  background: var(--gt-cyan);
+  box-shadow: 0 0 16px rgba(39, 216, 255, 0.45);
+}
+
+.brand-code {
+  margin-bottom: 18px;
+
+  color: #405563;
+
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+
+.telemetry-header .eyebrow {
+  margin-bottom: 5px;
+
+  color: var(--gt-cyan);
+
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+}
+
+.telemetry-header h1 {
+  margin: 0;
+
+  font-size: clamp(38px, 5vw, 66px);
+  font-weight: 900;
+  letter-spacing: -0.055em;
+  line-height: 0.95;
+}
+
+.telemetry-header h1 span {
+  color: var(--gt-cyan);
+  font-weight: 300;
+}
+
+.telemetry-header .subtitle {
+  margin-top: 12px;
+
+  color: var(--gt-muted);
+
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+
+/* LIVE STATUS */
+
+.system-status {
+  min-width: 145px;
+
+  padding: 12px 14px;
+
+  border: 1px solid var(--gt-line-bright);
+  border-radius: 3px;
+
+  background: rgba(5, 10, 15, 0.7);
+
+  font-family: Consolas, monospace;
+}
+
+.status-line {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: var(--gt-green);
+
+  font-size: 12px;
+  letter-spacing: 0.18em;
+}
+
+.status-text {
+  display: block;
+
+  margin-top: 7px;
+  margin-left: 17px;
+
+  color: var(--gt-muted);
+
+  font-size: 9px;
+  letter-spacing: 0.16em;
+}
+
+
+/* MAIN PANEL */
+
+.panel {
+  border-radius: 4px;
+
+  border: 1px solid var(--gt-line);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.015),
+      transparent 30%
+    ),
+    var(--gt-panel);
+
+  box-shadow: none;
+}
+
+.telemetry-panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.telemetry-panel-header {
+  margin: 0;
+  padding: 20px 22px;
+
+  border-bottom: 1px solid var(--gt-line);
+}
+
+.section-label {
+  margin-bottom: 6px;
+
+  color: var(--gt-cyan);
+
+  font-family: Consolas, monospace;
+
+  font-size: 10px;
+
+  letter-spacing: 0.2em;
+}
+
+.telemetry-panel h2 {
+  font-size: 17px;
+  letter-spacing: 0.04em;
+}
+
+
+/* STATS */
+
+.telemetry-strip {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.telemetry-stat {
+  position: relative;
+
+  min-width: 0;
+  min-height: 135px;
+
+  display: flex;
+  align-items: flex-end;
+
+  padding: 22px;
+
+  border-right: 1px solid var(--gt-line);
+  border-bottom: 1px solid var(--gt-line);
+
+  overflow: hidden;
+}
+
+.telemetry-stat:last-child {
+  border-right: 0;
+}
+
+.telemetry-stat::after {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 0;
+  height: 2px;
+
+  background: var(--gt-cyan);
+
+  transition: width 0.25s ease;
+}
+
+.telemetry-stat:hover::after {
+  width: 100%;
+}
+
+.stat-index {
+  position: absolute;
+  top: 15px;
+  right: 16px;
+
+  color: #30414c;
+
+  font-family: Consolas, monospace;
+  font-size: 10px;
+}
+
+.stat-label {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: var(--gt-muted);
+
+  font-family: Consolas, monospace;
+
+  font-size: 10px;
+  letter-spacing: 0.15em;
+}
+
+.telemetry-stat strong {
+  display: block;
+
+  max-width: 100%;
+
+  font-size: clamp(24px, 2.2vw, 34px);
+
+  line-height: 1;
+
+  letter-spacing: -0.035em;
+
+  white-space: nowrap;
+}
+
+.telemetry-stat-highlight {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(39, 216, 255, 0.08),
+      rgba(39, 216, 255, 0.015)
+    );
+}
+
+.telemetry-stat-highlight strong {
+  color: var(--gt-cyan);
+
+  text-shadow: 0 0 22px rgba(39, 216, 255, 0.2);
+}
+
+
+/* META AREA */
+
+.telemetry-meta {
+  display: flex;
+  align-items: center;
+
+  min-height: 70px;
+
+  padding: 14px 22px;
+
+  border-top: 1px solid var(--gt-line);
+
+  background: #080e14;
+}
+
+.meta-block {
+  min-width: 200px;
+}
+
+.meta-block span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #586d79;
+
+  font-family: Consolas, monospace;
+
+  font-size: 9px;
+  letter-spacing: 0.18em;
+}
+
+.meta-block strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.trend-meta strong {
+  color: var(--gt-green);
+}
+
+.meta-divider {
+  width: 1px;
+  height: 34px;
+
+  margin: 0 28px;
+
+  background: var(--gt-line);
+}
+
+
+/* decorative telemetry bars */
+
+.telemetry-scan {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+
+  height: 32px;
+
+  margin-left: auto;
+}
+
+.telemetry-scan span {
+  width: 4px;
+
+  background: var(--gt-cyan);
+
+  opacity: 0.5;
+}
+
+.telemetry-scan span:nth-child(1) {
+  height: 9px;
+}
+
+.telemetry-scan span:nth-child(2) {
+  height: 18px;
+}
+
+.telemetry-scan span:nth-child(3) {
+  height: 27px;
+}
+
+.telemetry-scan span:nth-child(4) {
+  height: 14px;
+}
+
+.telemetry-scan span:nth-child(5) {
+  height: 23px;
+}
+
+
+/* BUTTON OVERRIDE */
+
+.primary-button,
+.ghost-button {
+  border-radius: 3px;
+
+  font-family: Consolas, monospace;
+
+  font-size: 11px;
+
+  letter-spacing: 0.08em;
+}
+
+.ghost-button {
+  border-color: var(--gt-line-bright);
+
+  color: #8fa5b2;
+}
+
+.ghost-button:hover {
+  color: var(--gt-cyan);
+
+  border-color: var(--gt-cyan);
+
+  background: var(--gt-cyan-soft);
+}
+
+
+/* responsive */
+
+@media (max-width: 900px) {
+  .telemetry-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .telemetry-stat:nth-child(2n) {
+  border-right: 0;
+  }
+
+  .telemetry-stat:nth-child(n + 3) {
+  border-bottom: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .telemetry-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .telemetry-stat {
+    min-height: 110px;
+
+    border-right: 0;
+    border-bottom: 1px solid var(--gt-line);
+  }
+
+  .telemetry-header {
+    align-items: flex-start;
+  }
+
+  .telemetry-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .meta-divider {
+    display: none;
+  }
+
+  .telemetry-scan {
+    display: none;
+  }
+}
+
+/* ======================================================
+   AI ANALYST CONSOLE
+   ====================================================== */
+
+.analyst-console {
+  padding: 0;
+  overflow: hidden;
+
+  min-height: 560px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.console-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 22px;
+
+  border-bottom: 1px solid var(--gt-line);
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(39, 216, 255, 0.035),
+      transparent
+    );
+}
+
+.console-header h2 {
+  margin: 0;
+
+  font-size: 17px;
+  letter-spacing: 0.04em;
+}
+
+.console-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: var(--gt-green);
+
+  font-family: Consolas, monospace;
+  font-size: 9px;
+  letter-spacing: 0.13em;
+}
+
+.console-status-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: var(--gt-green);
+
+  box-shadow:
+    0 0 8px rgba(121, 242, 166, 0.8);
+}
+
+
+/* console data header */
+
+.console-meta {
+  display: flex;
+  gap: 24px;
+
+  padding: 10px 22px;
+
+  border-bottom: 1px solid var(--gt-line);
+
+  background: #080e14;
+
+  color: #506774;
+
+  font-family: Consolas, monospace;
+  font-size: 9px;
+  letter-spacing: 0.13em;
+}
+
+
+/* message area */
+
+.console-messages {
+  position: relative;
+
+  flex: 1;
+
+  min-height: 365px;
+  max-height: 480px;
+
+  padding: 22px;
+
+  overflow-y: auto;
+}
+
+.console-messages::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 3px,
+      rgba(255, 255, 255, 0.008) 4px
+    );
+}
+
+
+/* labels */
+
+.analyst-console .message-label {
+  color: #527180;
+
+  font-family: Consolas, monospace;
+
+  font-size: 9px;
+  letter-spacing: 0.14em;
+}
+
+
+/* AI */
+
+.analyst-console .assistant-message .message-bubble {
+  position: relative;
+
+  max-width: 88%;
+
+  padding: 14px 16px;
+
+  border: 1px solid #213746;
+  border-radius: 2px;
+
+  background: #0b151e;
+
+  color: #dce8ef;
+
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.analyst-console .assistant-message .message-bubble::before {
+  content: "";
+
+  position: absolute;
+
+  top: -1px;
+  left: -1px;
+
+  width: 24px;
+  height: 2px;
+
+  background: var(--gt-cyan);
+}
+
+
+/* USER */
+
+.analyst-console .user-message .message-label {
+  color: var(--gt-cyan);
+}
+
+.analyst-console .user-message .message-bubble {
+  max-width: 78%;
+
+  border: 1px solid rgba(39, 216, 255, 0.4);
+  border-radius: 2px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(39, 216, 255, 0.16),
+      rgba(39, 216, 255, 0.05)
+    );
+
+  color: #e8faff;
+}
+
+
+/* loading */
+
+.analyst-console .loading-indicator {
+  margin: 0;
+
+  padding: 8px 22px;
+
+  border-top: 1px solid var(--gt-line);
+
+  background: #080e14;
+
+  color: #58717e;
+
+  font-family: Consolas, monospace;
+  font-size: 9px;
+
+  letter-spacing: 0.11em;
+}
+
+
+/* input */
+
+.console-input {
+  margin: 0;
+
+  padding: 14px 18px 18px;
+
+  border-top: 1px solid var(--gt-line);
+
+  background: #080d13;
+}
+
+.console-prompt {
+  display: flex;
+  align-items: center;
+
+  min-width: 0;
+
+  border: 1px solid var(--gt-line-bright);
+  border-radius: 2px;
+
+  background: #060b10;
+}
+
+.console-prompt > span {
+  padding-left: 14px;
+
+  color: var(--gt-cyan);
+
+  font-family: Consolas, monospace;
+  font-size: 16px;
+}
+
+.console-prompt input {
+  width: 100%;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: none;
+
+  background: transparent !important;
+
+  color: #dcecf3;
+
+  padding: 13px 14px;
+
+  font-family:
+    Consolas,
+    Pretendard,
+    monospace;
+
+  font-size: 12px;
+}
+
+.console-prompt input::placeholder {
+  color: #40535f;
+
+  font-family: Consolas, monospace;
+  letter-spacing: 0.04em;
+}
+
+.console-prompt:focus-within {
+  border-color: var(--gt-cyan);
+
+  box-shadow:
+    0 0 0 1px rgba(39, 216, 255, 0.08);
+}
+
+
+/* run query button */
+
+.console-run-button {
+  min-width: 105px;
+
+  border: 1px solid var(--gt-cyan);
+
+  border-radius: 2px;
+
+  background: var(--gt-cyan);
+
+  color: #031017;
+
+  font-family: Consolas, monospace;
+
+  font-size: 10px;
+
+  letter-spacing: 0.08em;
+}
+
+.console-run-button:hover {
+  background: transparent;
+
+  color: var(--gt-cyan);
+}
+
+
+/* scrollbar */
+
+.console-messages::-webkit-scrollbar {
+  width: 5px;
+}
+
+.console-messages::-webkit-scrollbar-track {
+  background: #070c11;
+}
+
+.console-messages::-webkit-scrollbar-thumb {
+  background: #213946;
+}
+
+.console-messages::-webkit-scrollbar-thumb:hover {
+  background: var(--gt-cyan);
+}
+
+
+/* mobile */
+
+@media (max-width: 600px) {
+  .console-meta {
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+
+  .console-status {
+    display: none;
+  }
+
+  .console-input {
+    grid-template-columns: 1fr;
+  }
+
+  .console-run-button {
+    width: 100%;
+  }
+}
+
+/* ======================================================
+   PLAYER RECORDS + QUERY LOG
+   ====================================================== */
+
+.data-panel,
+.conversation-panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.data-panel .data-form,
+.data-panel .data-toolbar,
+.data-panel .data-status,
+.data-panel .data-table-wrap,
+.data-panel .pagination {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.data-panel .data-form {
+  margin-top: 18px;
+}
+
+.data-panel input {
+  border-radius: 2px !important;
+  background: #070c11 !important;
+  border-color: var(--gt-line-bright) !important;
+
+  font-family: Consolas, Pretendard, monospace;
+  font-size: 11px;
+}
+
+.data-table {
+  font-family: Consolas, Pretendard, monospace;
+}
+
+.data-table th {
+  color: #58717f;
+
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.data-table td {
+  font-size: 11px;
+}
+
+.data-table tbody tr:hover {
+  background: rgba(39, 216, 255, 0.035);
+}
+
+.delete-button,
+.conversation-delete {
+  border-radius: 2px;
+
+  font-family: Consolas, monospace;
+
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+.conversation-list {
+  padding: 18px 20px 20px;
+}
+
+.conversation-item {
+  border-radius: 2px;
+
+  border-color: var(--gt-line);
+
+  background: #080e14;
+}
+
+.conversation-item:hover {
+  border-color: #284250;
+
+  background: rgba(39, 216, 255, 0.025);
+}
+
+.conversation-open strong {
+  font-size: 12px;
+}
+
+.conversation-open span {
+  color: #526975;
+
+  font-family: Consolas, monospace;
+
+  font-size: 9px;
+}
+
+.pagination {
+  padding-bottom: 18px;
+}
+
+/* ======================================================
+   READABILITY FIX
+   게임 분위기는 유지하고 본문 가독성 복원
+   ====================================================== */
+
+/* 본문/데이터/대화는 원래 폰트로 */
+.data-panel,
+.conversation-panel,
+.analyst-console {
+  font-family:
+    Inter,
+    Pretendard,
+    "Noto Sans KR",
+    Arial,
+    sans-serif;
+}
+
+/* 작은 영문 라벨만 콘솔 폰트 유지 */
+.section-label,
+.console-status,
+.console-meta,
+.stat-label,
+.stat-index,
+.meta-block span,
+.brand-code,
+.telemetry-header .eyebrow {
+  font-family: Consolas, monospace;
+}
+
+/* 데이터 입력창 */
+.data-panel input {
+  font-family:
+    Inter,
+    Pretendard,
+    "Noto Sans KR",
+    Arial,
+    sans-serif !important;
+
+  font-size: 13px;
+}
+
+/* 데이터 테이블 */
+.data-table {
+  font-family:
+    Inter,
+    Pretendard,
+    "Noto Sans KR",
+    Arial,
+    sans-serif;
+}
+
+.data-table th {
+  font-family:
+    Inter,
+    Pretendard,
+    "Noto Sans KR",
+    Arial,
+    sans-serif;
+
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.data-table td {
+  font-size: 13px;
+}
+
+/* 대화 목록 */
+.conversation-open strong {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.conversation-open span {
+  font-family:
+    Inter,
+    Pretendard,
+    "Noto Sans KR",
+    Arial,
+    sans-serif;
+
+  font-size: 11px;
+}
+
+/* 삭제 버튼 */
+.delete-button,
+.conversation-delete {
+  font-family:
+    Inter,
+    Pretendard,
+    "Noto Sans KR",
+    Arial,
+    sans-serif;
+
+  font-size: 11px;
+}
+
+/* AI 답변 */
+.analyst-console .assistant-message .message-bubble,
+.analyst-console .user-message .message-bubble {
+  font-family:
+    Inter,
+    Pretendard,
+    "Noto Sans KR",
+    Arial,
+    sans-serif;
+
+  font-size: 14px;
+}
+
+/* 채팅 입력 */
+.console-prompt input {
+  font-family:
+    Inter,
+    Pretendard,
+    "Noto Sans KR",
+    Arial,
+    sans-serif;
+
+  font-size: 13px;
+}
+
+/* 버튼도 너무 작지 않게 */
+.primary-button,
+.ghost-button {
+  font-size: 12px;
+}
+
+/* ======================================================
+   FINAL CHECK 01 - HEADER
+   ====================================================== */
+
+.telemetry-header h1 {
+  margin-bottom: 8px;
+}
+
+.telemetry-header .subtitle {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.system-status {
+  min-width: 155px;
+  padding: 13px 16px;
+}
+
+.status-line {
+  font-size: 12px;
+}
+
+.status-text {
+  font-size: 10px;
+}
+
+/* ======================================================
+   FINAL CHECK 02 - PLAYER TELEMETRY
+   ====================================================== */
+
+.stat-label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.stat-index {
+  font-size: 10px;
+}
+
+.telemetry-stat strong {
+  font-size: clamp(26px, 2.2vw, 35px);
+}
+
+.meta-block span {
+  font-size: 10px;
+}
+
+.meta-block strong {
+  font-size: 14px;
+}
+
+.telemetry-meta {
+  min-height: 76px;
+}
+
+/* ======================================================
+   FINAL CHECK 03 - AI ANALYST CONSOLE
+   ====================================================== */
+
+.console-header h2 {
+  font-size: 18px;
+}
+
+.console-meta {
+  font-size: 10px;
+  gap: 22px;
+}
+
+.analyst-console .message-label {
+  font-size: 10px;
+}
+
+.analyst-console .assistant-message .message-bubble,
+.analyst-console .user-message .message-bubble {
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.console-prompt input {
+  font-size: 13px;
+}
+
+.console-run-button {
+  min-width: 92px;
+  font-size: 11px;
+}
+
+.analyst-console .loading-indicator {
+  font-size: 10px;
+}
+
+/* ======================================================
+   FINAL CHECK 04 - PLAYER RECORDS
+   ====================================================== */
+
+.data-form input {
+  min-height: 42px;
+  font-size: 13px;
+}
+
+.data-form .primary-button {
+  min-height: 42px;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+.data-toolbar input {
+  min-height: 38px;
+  font-size: 13px;
+}
+
+.data-table th {
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+
+.data-table td {
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  font-size: 13px;
+}
+
+.data-table td:nth-child(1),
+.data-table td:nth-child(2) {
+  font-weight: 600;
+}
+
+.delete-button {
+  padding: 7px 11px;
+}
+
+/* ======================================================
+   FINAL CHECK 05 - QUERY LOG
+   ====================================================== */
+
+.conversation-list {
+  gap: 11px;
+}
+
+.conversation-item {
+  min-height: 62px;
+  padding: 12px 10px;
+}
+
+.conversation-open {
+  gap: 7px;
+}
+
+.conversation-open strong {
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.conversation-open span {
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.conversation-delete {
+  padding: 8px 11px;
+  font-size: 11px;
+}
+
+/* ======================================================
+   FINAL CHECK 05 - QUERY LOG
+   ====================================================== */
+
+.conversation-list {
+  gap: 11px;
+}
+
+.conversation-item {
+  min-height: 62px;
+  padding: 12px 10px;
+}
+
+.conversation-open {
+  gap: 7px;
+}
+
+.conversation-open strong {
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.conversation-open span {
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.conversation-delete {
+  padding: 8px 11px;
+  font-size: 11px;
+}
+
+/* ======================================================
+   FINAL CHECK 06 - LAYOUT BALANCE
+   ====================================================== */
+
+.dashboard {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.dashboard-column {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+.summary-panel,
+.chat-panel,
+.data-panel,
+.conversation-panel {
+  align-self: auto;
+}
+
+/* ======================================================
+   FINAL CHECK 07 - RESPONSIVE + UI CONSISTENCY
+   ====================================================== */
+
+/* 버튼 높이 통일 */
+.primary-button,
+.ghost-button,
+.delete-button,
+.conversation-delete {
+  min-height: 38px;
+}
+
+/* 섹션 헤더 버튼이 너무 커지지 않게 */
+.telemetry-panel-header .ghost-button {
+  white-space: nowrap;
+}
+
+/* 900px 이하: 1열 전환 */
+@media (max-width: 900px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-column {
+    gap: 18px;
+  }
+
+  .analyst-console {
+    min-height: 520px;
+  }
+}
+
+/* 600px 이하: 모바일 */
+@media (max-width: 600px) {
+  .app-shell {
+    width: calc(100% - 20px);
+  }
+
+  .telemetry-header {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .system-status {
+    width: 100%;
+  }
+
+  .telemetry-panel-header,
+  .console-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .telemetry-panel-header .ghost-button {
+    width: 100%;
+  }
+
+  .telemetry-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .telemetry-stat {
+    border-right: 0;
+  }
+
+  .data-form {
+    grid-template-columns: 1fr;
+  }
+
+  .data-form .primary-button {
+    width: 100%;
+  }
+
+  .data-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .console-input {
+    grid-template-columns: 1fr;
+  }
+
+  .console-run-button {
+    width: 100%;
+  }
+
+  .conversation-item {
+    grid-template-columns: 1fr;
+  }
+
+  .conversation-delete {
+    width: 100%;
+  }
+}
+
+.analyst-console {
+  scroll-margin-top: 16px;
+}
+
+/* ======================================================
+   MOBILE TABLE FIX
+   ====================================================== */
+
+.data-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* PC / 기본 */
+.data-table {
+  width: 100%;
+  min-width: 0;
+}
+
+/* 모바일에서만 가로 스크롤용 최소 폭 */
+@media (max-width: 600px) {
+  .data-table {
+    min-width: 620px;
+  }
+}
+
+.data-table th:last-child,
+.data-table td:last-child {
+  width: 72px;
+  min-width: 72px;
+  text-align: center;
+}
+
+.delete-button {
+  min-width: 54px;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .data-panel .data-table-wrap {
+    width: calc(100% - 24px);
+    margin-left: 12px !important;
+    margin-right: 12px !important;
+  }
+
+
+  .data-table th,
+  .data-table td {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .delete-button {
+    padding: 7px 9px;
+  }
+}
+
+.mobile-table-hint {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .mobile-table-hint {
+    display: block;
+    margin: 8px 12px;
+    color: #58717f;
+    font-size: 11px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .analyst-console {
+    min-height: 460px;
+  }
+
+  .console-messages {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 600px) {
+  .conversation-open strong {
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    line-height: 1.45;
+  }
+}
+
+/* ======================================================
+   THEME TOGGLE
+   ====================================================== */
+
+.header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.theme-toggle {
+  min-height: 38px;
+  padding: 9px 14px;
+
+  border: 1px solid var(--gt-line-bright);
+  border-radius: 2px;
+
+  background: #080e14;
+  color: #9bb1be;
+
+  font-family: Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  border-color: var(--gt-cyan);
+  color: var(--gt-cyan);
+}
+
+
+/* ======================================================
+   LIGHT THEME
+   ====================================================== */
+
+body.light-theme {
+  --gt-bg: #eef4f7;
+  --gt-panel: #ffffff;
+  --gt-panel-soft: #f5f8fa;
+
+  --gt-line: #ccd9df;
+  --gt-line-bright: #a8c0cb;
+
+  --gt-text: #15232d;
+  --gt-muted: #607783;
+
+  background:
+    linear-gradient(
+      rgba(30, 120, 150, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(30, 120, 150, 0.05) 1px,
+      transparent 1px
+    ),
+    #eef4f7;
+
+  color: #15232d;
+}
+
+body.light-theme .panel,
+body.light-theme .analyst-console,
+body.light-theme .conversation-item {
+  background: #ffffff;
+}
+
+body.light-theme .telemetry-stat {
+  background: #ffffff;
+}
+
+body.light-theme .telemetry-stat-highlight {
+  background: #eaf8fb;
+}
+
+body.light-theme .console-meta,
+body.light-theme .console-input,
+body.light-theme .analyst-console .loading-indicator {
+  background: #f4f8fa;
+}
+
+body.light-theme .console-prompt {
+  background: #ffffff;
+}
+
+body.light-theme .console-prompt input {
+  color: #15232d;
+}
+
+body.light-theme .analyst-console .assistant-message .message-bubble {
+  background: #f3f7f9;
+  color: #15232d;
+}
+
+body.light-theme .analyst-console .user-message .message-bubble {
+  background: #dff5fb;
+  color: #12313d;
+}
+
+body.light-theme .data-panel input,
+body.light-theme .data-toolbar input {
+  background: #ffffff !important;
+  color: #15232d !important;
+}
+
+body.light-theme .data-table td {
+  color: #20333e;
+}
+
+body.light-theme .conversation-open {
+  color: #15232d;
+}
+
+body.light-theme .theme-toggle {
+  background: #ffffff;
+  color: #344f5c;
+}
+
+body.light-theme .delete-button,
+body.light-theme .conversation-delete {
+  background: #fff1f3;
+}
+
+
+/* 모바일 */
+@media (max-width: 600px) {
+  .header-actions {
+    width: 100%;
+  }
+
+  .theme-toggle {
+    width: 100%;
+  }
+}
+
+/* ======================================================
+   LIGHT THEME POLISH
+   ====================================================== */
+
+body.light-theme .system-status {
+  background: #ffffff;
+  border-color: #a8c0cb;
+}
+
+body.light-theme .status-line {
+  color: #1f3a46;
+}
+
+body.light-theme .status-text {
+  color: #6b818c;
+}
+
+body.light-theme .telemetry-meta {
+  background: #f4f8fa;
+  border-top-color: #ccd9df;
+}
+
+body.light-theme .meta-block strong {
+  color: #20333e;
+}
+
+body.light-theme .meta-block span {
+  color: #607783;
+}
+
+body.light-theme .theme-toggle {
+  border-color: #9bb8c5;
+}
+
+body.light-theme .theme-toggle:hover {
+  background: #eaf8fb;
+}
+
+/* ======================================================
+   DATA TABLE WIDTH FIX
+   ====================================================== */
+
+.data-panel .data-table-wrap {
+  width: calc(100% - 40px);
+  margin-left: 20px;
+  margin-right: 20px;
 }

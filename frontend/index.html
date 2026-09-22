@@ -8,207 +8,301 @@
 </head>
 <body>
   <div class="app-shell">
-    <header class="topbar">
-      <div>
-        <p class="eyebrow">STEAM PLAYER ANALYTICS</p>
-        <h1>GameTrend AI</h1>
+    <header class="topbar telemetry-header">
+      <div class="brand-block">
+        <div class="brand-code">GT // 578080</div>
+
+        <p class="eyebrow">STEAM PLAYER TELEMETRY SYSTEM</p>
+
+        <h1>
+          GAMETREND
+          <span>AI</span>
+        </h1>
+
         <p class="subtitle">
-          Steam 플레이어 데이터를 기반으로 추세를 분석하고 AI에게 질문해보세요.
+          PUBG player activity intelligence · Steam time-series monitoring
         </p>
       </div>
-      <div class="status-badge">
-        <span class="status-dot"></span>
-        API Connected
+
+      <div class="header-actions">
+
+        <div class="system-status">
+          <div class="status-line">
+            <span class="status-dot"></span>
+            <strong>LIVE</strong>
+          </div>
+
+          <span class="status-text">API CONNECTED</span>
+        </div>
+
+        <button
+          id="themeToggleBtn"
+          class="theme-toggle"
+          type="button"
+          aria-label="화면 테마 변경"
+        >
+          ☀ LIGHT MODE
+        </button>
+
       </div>
     </header>
 
     <main class="dashboard">
-      <section class="summary-panel panel">
-        <div class="panel-header">
-          <div>
-            <p class="section-label">DATA SUMMARY</p>
-            <h2>PUBG Player Overview</h2>
-          </div>
-          <button id="refreshSummaryBtn" class="ghost-button">
-            새로고침
-          </button>
-        </div>
 
-        <div class="summary-grid">
-          <article class="summary-card">
-            <span>데이터 개수</span>
-            <strong id="summaryCount">-</strong>
-          </article>
+      <div class="dashboard-column">
+        <!-- 기존 summary-panel 전체 -->
+        <section class="summary-panel panel telemetry-panel">
 
-          <article class="summary-card">
-            <span>평균 플레이어</span>
-            <strong id="summaryAverage">-</strong>
-          </article>
+          <div class="panel-header telemetry-panel-header">
+            <div>
+              <p class="section-label">PLAYER TELEMETRY</p>
+              <h2>PUBG // LIVE DATASET</h2>
+            </div>
 
-          <article class="summary-card">
-            <span>최대 플레이어</span>
-            <strong id="summaryMax">-</strong>
-          </article>
-
-          <article class="summary-card">
-            <span>최근 플레이어</span>
-            <strong id="summaryLatest">-</strong>
-          </article>
-        </div>
-
-        <div class="trend-box">
-          <div>
-            <span class="trend-label">분석 기간</span>
-            <strong id="summaryPeriod">-</strong>
+            <button id="refreshSummaryBtn" class="ghost-button">
+              데이터 새로고침
+            </button>
           </div>
 
-          <div>
-            <span class="trend-label">현재 추세</span>
-            <strong id="summaryTrend">-</strong>
+          <div class="telemetry-strip">
+
+            <article class="telemetry-stat">
+              <span class="stat-index">01</span>
+
+              <div>
+                <span class="stat-label">DATA RECORDS</span>
+                <strong id="summaryCount">-</strong>
+              </div>
+            </article>
+
+            <article class="telemetry-stat">
+              <span class="stat-index">02</span>
+
+              <div>
+                <span class="stat-label">AVG PLAYERS</span>
+                <strong id="summaryAverage">-</strong>
+              </div>
+            </article>
+
+            <article class="telemetry-stat">
+              <span class="stat-index">03</span>
+
+              <div>
+                <span class="stat-label">PEAK PLAYERS</span>
+                <strong id="summaryMax">-</strong>
+              </div>
+            </article>
+
+            <article class="telemetry-stat telemetry-stat-highlight">
+              <span class="stat-index">04</span>
+
+              <div>
+                <span class="stat-label">CURRENT PLAYERS</span>
+                <strong id="summaryLatest">-</strong>
+              </div>
+            </article>
+
           </div>
-        </div>
-      </section>
 
-      <section class="chat-panel panel">
-        <div class="panel-header">
-          <div>
-            <p class="section-label">AI ANALYST</p>
-            <h2>데이터 기반 AI 채팅</h2>
+          <div class="telemetry-meta">
+
+            <div class="meta-block">
+              <span>DATA RANGE</span>
+              <strong id="summaryPeriod">-</strong>
+            </div>
+
+            <div class="meta-divider"></div>
+
+            <div class="meta-block trend-meta">
+              <span>CURRENT SIGNAL</span>
+              <strong id="summaryTrend">-</strong>
+            </div>
+
+            <div class="telemetry-scan">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
           </div>
-        </div>
 
-        <div id="chatMessages" class="chat-messages">
-          <div class="message assistant-message welcome-message">
-            <div class="message-label">AI</div>
+        </section>
 
-            <div class="message-bubble">
-              안녕하세요! 저장된 PUBG 플레이어 데이터를 기반으로 최근 추세와 통계를 분석해드릴게요.
+        <!-- 기존 data-panel 전체 -->
+        <section class="data-panel panel">
+          <div class="panel-header telemetry-panel-header">
+            <div>
+              <p class="section-label">PLAYER RECORDS</p>
+              <h2>STEAM // DATASET MANAGER</h2>
+            </div>
+
+            <button id="refreshDataBtn" class="ghost-button">
+              데이터 새로고침
+            </button>
+          </div>
+
+          <form id="dataForm" class="data-form">
+            <input
+              id="dataDate"
+              type="date"
+              required
+            />
+
+            <input
+              id="dataValue"
+              type="number"
+              min="0"
+              placeholder="플레이어 수"
+              required
+            />
+
+            <input
+              id="dataMemo"
+              type="text"
+              maxlength="200"
+              placeholder="메모"
+            />
+
+            <button type="submit" class="primary-button">
+              추가
+            </button>
+          </form>
+
+          <div id="dataStatus" class="data-status"></div>
+
+          <div class="data-toolbar">
+            <input
+              id="dataSearch"
+              type="text"
+              placeholder="날짜 또는 메모 검색"
+            />
+
+            <span id="dataCountInfo"></span>
+          </div>
+
+            <p class="mobile-table-hint">
+             ← 표를 좌우로 밀어서 전체 항목을 확인할 수 있습니다 →
+            </p>
+
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>날짜</th>
+                  <th>플레이어 수</th>
+                  <th>메모</th>
+                  <th>관리</th>
+                </tr>
+              </thead>
+
+              <tbody id="dataTableBody"></tbody>
+            </table>
+          </div>
+
+          <div class="pagination">
+            <button
+              id="prevPageBtn"
+              type="button"
+              class="ghost-button"
+            >
+              이전
+            </button>
+
+            <span id="pageInfo">1 / 1</span>
+
+            <button
+              id="nextPageBtn"
+              type="button"
+              class="ghost-button"
+            >
+              다음
+            </button>
+          </div>
+        </section>
+        
+      </div>
+
+      <div class="dashboard-column">
+
+        <section class="chat-panel panel analyst-console">
+
+          <div class="console-header">
+            <div>
+              <p class="section-label">AI ANALYST CONSOLE</p>
+              <h2>PUBG // INTELLIGENCE QUERY</h2>
+            </div>
+
+            <div class="console-status">
+              <span class="console-status-dot"></span>
+              MODEL ONLINE
             </div>
           </div>
-        </div>
 
-        <div id="loadingIndicator" class="loading-indicator hidden">
-          <span></span>
-          <span></span>
-          <span></span>
-          AI가 데이터를 분석하고 있습니다.
-        </div>
-
-        <form id="chatForm" class="chat-form">
-          <input
-            id="chatInput"
-            type="text"
-            placeholder="예: 최근 PUBG 플레이어 수는 증가 추세야?"
-            maxlength="500"
-            autocomplete="off"
-          />
-          <button type="submit" class="primary-button">
-            전송
-          </button>
-        </form>
-      </section>
-
-      <section class="data-panel panel">
-        <div class="panel-header">
-          <div>
-            <p class="section-label">DATA MANAGER</p>
-            <h2>데이터 관리</h2>
+          <div class="console-meta">
+            <span>DATASET: PUBG</span>
+            <span>RECORDS: 365</span>
+            <span>MODE: ANALYSIS</span>
           </div>
 
-          <button id="refreshDataBtn" class="ghost-button">
-            새로고침
-          </button>
-        </div>
+          <div id="chatMessages" class="chat-messages console-messages">
 
-        <form id="dataForm" class="data-form">
-          <input
-            id="dataDate"
-            type="date"
-            required
-          />
+            <div class="message assistant-message welcome-message">
+              <div class="message-label">SYSTEM // AI</div>
 
-          <input
-            id="dataValue"
-            type="number"
-            min="0"
-            placeholder="플레이어 수"
-            required
-          />
+              <div class="message-bubble">
+                PUBG 플레이어 텔레메트리 데이터가 연결되었습니다.
+                최근 추세, 평균, 최대·최소 플레이어 수를 분석할 수 있습니다.
+              </div>
+            </div>
 
-          <input
-            id="dataMemo"
-            type="text"
-            maxlength="200"
-            placeholder="메모"
-          />
+          </div>
 
-          <button type="submit" class="primary-button">
-            추가
-          </button>
-        </form>
+          <div id="loadingIndicator" class="loading-indicator hidden">
+            <span></span>
+            <span></span>
+            <span></span>
+            ANALYZING DATA STREAM...
+          </div>
 
-        <div id="dataStatus" class="data-status"></div>
+          <form id="chatForm" class="chat-form console-input">
 
-        <div class="data-toolbar">
-          <input
-            id="dataSearch"
-            type="text"
-            placeholder="날짜 또는 메모 검색"
-          />
+            <div class="console-prompt">
+              <span>&gt;</span>
 
-          <span id="dataCountInfo"></span>
-        </div>
+              <input
+                id="chatInput"
+                type="text"
+                placeholder="여기에 질문을 입력하세요..."
+                maxlength="500"
+                autocomplete="off"
+              />
+            </div>
 
-        <div class="data-table-wrap">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>날짜</th>
-                <th>플레이어 수</th>
-                <th>메모</th>
-                <th>관리</th>
-              </tr>
-            </thead>
+            <button type="submit" class="primary-button console-run-button">
+              작성
+            </button>
 
-            <tbody id="dataTableBody"></tbody>
-          </table>
-        </div>
+          </form>
 
-        <div class="pagination">
-          <button
-            id="prevPageBtn"
-            type="button"
-            class="ghost-button"
-          >
-            이전
-          </button>
+        </section>
 
-          <span id="pageInfo">1 / 1</span>
-
-          <button
-            id="nextPageBtn"
-            type="button"
-            class="ghost-button"
-          >
-            다음
-          </button>
-        </div>
-      </section>
-
+      <!-- 기존 conversation-panel 전체 -->
       <section class="conversation-panel panel">
-       <div class="panel-header">
-         <div>
-           <p class="section-label">HISTORY</p>
-           <h2>이전 대화</h2>
-         </div>
+        <div class="panel-header telemetry-panel-header">
+          <div>
+            <p class="section-label">QUERY LOG</p>
+            <h2>AI // CONVERSATION HISTORY</h2>
+          </div>
 
-         <button
-           id="refreshConversationsBtn"
-           class="ghost-button"
-         >
-           새로고침
-         </button>
-      </div>
+          <button
+            id="refreshConversationsBtn"
+            class="ghost-button"
+          >
+            대화 기록 새로고침
+          </button>
+        </div>
 
       <div
         id="conversationList"
@@ -216,12 +310,13 @@
       ></div>
     </section>
 
-    </main>
-  </div>
+    </div>
+  </main>
 
   <script src="./js/api.js"></script>
   <script src="./js/chat.js"></script>
   <script src="./js/data.js"></script>
   <script src="./js/conversations.js"></script>
+  <script src="./js/theme.js"></script>
 </body>
 </html>
