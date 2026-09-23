@@ -1,4 +1,6 @@
-const API_BASE_URL = "https://gametrend-ai-api.onrender.com";
+const API_BASE_URL =
+  window.API_BASE_URL ||
+  "https://gametrend-ai-api.onrender.com";
 
 async function apiRequest(path, options = {}) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
