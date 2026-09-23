@@ -2249,3 +2249,21 @@ body.light-theme .theme-toggle:hover {
     padding: 10px 8px 14px;
   }
 }
+
+/* DATA HEADER ACTIONS */
+.data-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .data-header-actions {
+    width: 100%;
+  }
+
+  .data-header-actions .ghost-button {
+    flex: 1;
+  }
+}

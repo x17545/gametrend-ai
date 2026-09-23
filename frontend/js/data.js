@@ -273,3 +273,69 @@ nextPageBtn.addEventListener(
 
 
 loadData();
+
+const downloadCsvBtn = document.getElementById("downloadCsvBtn");
+
+function escapeCsvValue(value) {
+  const text = String(value ?? "");
+
+  if (
+    text.includes(",") ||
+    text.includes('"') ||
+    text.includes("\n")
+  ) {
+    return `"${text.replace(/"/g, '""')}"`;
+  }
+
+  return text;
+}
+
+async function downloadCsv() {
+  try {
+    const data = await apiRequest("/api/data");
+
+    const rows = [
+      ["date", "value", "memo"],
+      ...data.map((item) => [
+        item.date,
+        item.value,
+        item.memo ?? "",
+      ]),
+    ];
+
+    const csvContent = rows
+      .map((row) =>
+        row.map(escapeCsvValue).join(",")
+      )
+      .join("\n");
+
+    const blob = new Blob(
+      ["\uFEFF" + csvContent],
+      {
+        type: "text/csv;charset=utf-8;",
+      }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "gametrend_data.csv";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("CSV 다운로드 실패:", error);
+    alert("CSV 다운로드 중 오류가 발생했습니다.");
+  }
+}
+
+if (downloadCsvBtn) {
+  downloadCsvBtn.addEventListener(
+    "click",
+    downloadCsv
+  );
+}
