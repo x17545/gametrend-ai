@@ -9,6 +9,7 @@ from app.config import (
 )
 from app.tools.definitions import DATA_TOOLS
 from app.tools.executor import execute_tool
+from app.services.data_service import get_data_summary
 
 
 client = OpenAI(
@@ -18,6 +19,8 @@ client = OpenAI(
 
 
 def generate_chat_response(message: str) -> str:
+    # 요약 API와 같은 서비스 함수를 재사용하여 요청마다 최신 통계를 조회합니다.
+    summary = get_data_summary()
     system_prompt = """
 당신은 Steam 게임 플레이어 데이터를 분석하는 AI 도우미입니다.
 
@@ -25,16 +28,21 @@ def generate_chat_response(message: str) -> str:
 개수, 기간, 평균, 최대, 최소, 최근 값,
 최근 7일 평균, 이전 7일 평균, 변화율,
 현재 추세 등에 대해 질문하면
-get_data_summary 도구를 사용해 실제 저장 데이터를 조회하세요.
+아래 시스템 프롬프트에 포함된 데이터 요약을 먼저 참고하세요.
+요약을 다시 조회할 필요가 있으면 get_data_summary 도구를 사용하세요.
 
 사용자가 저장된 대화 기록, 최근 대화 제목,
 이전 대화 내용 등에 대해 질문하면
 get_conversations 도구를 사용해 저장된 대화 목록을 조회하세요.
 
-도구에서 받은 데이터를 근거로만 답변하세요.
+제공된 데이터 요약과 도구에서 받은 데이터를 근거로만 답변하세요.
+요약의 count가 0이면 저장된 데이터가 없다고 안내하세요.
+null인 통계는 계산할 수 없는 값이며 0으로 해석하지 마세요.
 데이터에 없는 내용은 추측하지 마세요.
 사용자에게 한국어로 간결하고 이해하기 쉽게 답변하세요.
 """
+    system_prompt += "\n현재 저장된 PUBG 플레이어 데이터 요약(JSON):\n"
+    system_prompt += json.dumps(summary, ensure_ascii=False)
 
     messages = [
         {
