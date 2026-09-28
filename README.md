@@ -160,6 +160,96 @@ date,value,memo
 
 사용자가 화면 테마를 직접 전환할 수 있으며, 선택한 테마는 브라우저에 저장되어 다음 접속 시에도 유지된다.
 
+### 5. Function Calling 기반 데이터 조회
+
+GameTrend AI의 AI 채팅은 사용자의 질문 내용에 따라 필요한 내부 도구를 자동으로 선택해 호출할 수 있도록 Function Calling을 적용하였다.
+
+현재 등록된 주요 도구는 다음과 같다.
+
+- `get_data_summary`
+  - 저장된 PUBG 플레이어 데이터의 요약 통계를 조회한다.
+  - 데이터 개수, 기간, 평균, 최대/최소, 최근 값, 최근 7일 평균, 이전 7일 평균, 변화율, 추세 등을 반환한다.
+
+- `get_conversations`
+  - 저장된 AI 대화 기록 목록을 조회한다.
+  - 최근 대화 제목, 메시지, 생성 시각 등을 확인할 때 사용한다.
+
+사용자가 단순한 일반 질문을 하면 AI가 직접 응답하고,
+저장된 데이터나 대화 기록이 필요한 질문을 하면 관련 도구를 호출한 뒤
+도구 실행 결과를 바탕으로 최종 답변을 생성한다.
+
+예시:
+
+```text
+사용자
+  ↓
+"최근 7일 평균과 이전 7일 평균을 비교해줘"
+  ↓
+AI가 get_data_summary 호출 결정
+  ↓
+FastAPI Service에서 실제 저장 데이터 조회
+  ↓
+도구 실행 결과 반환
+  ↓
+AI가 실제 데이터 기반 최종 답변 생성
+```
+
+### 6. MCP Server 연동
+
+GameTrend AI는 Model Context Protocol(MCP) Server를 추가하여
+기존 데이터 조회 기능을 MCP Tool 형태로 외부 클라이언트에서도 사용할 수 있도록 구성하였다.
+현재 MCP Server에 등록된 도구는 다음과 같다.
+- get_player_data_summary
+- get_saved_conversations
+MCP Tool은 별도의 데이터 처리 로직을 새로 구현하지 않고
+기존 FastAPI Service Layer를 그대로 재사용한다.
+
+```text
+MCP Client / MCP Inspector
+        ↓
+GameTrend AI MCP Server
+        ↓
+get_player_data_summary
+get_saved_conversations
+        ↓
+기존 Service Layer
+        ↓
+Firestore / 저장 데이터
+```
+
+MCP Inspector를 이용하여 다음 항목을 확인하였다.
+- MCP Server 연결
+- Tool 목록 조회
+- get_player_data_summary 실행
+- get_saved_conversations 실행
+- 실제 저장 데이터 반환 확인
+
+#### MCP 실행 확인
+
+MCP Inspector에서 GameTrend AI MCP Server가 정상 연결되고
+등록된 Tool 목록을 확인한 화면이다.
+
+![MCP Server Connected](screenshots/17_mcp_connected.png)
+
+`get_player_data_summary` Tool을 실행하여 실제 PUBG 플레이어 요약 통계를 조회한 결과이다.
+
+![MCP Data Summary](screenshots/18_mcp_data_summary.png)
+
+`get_saved_conversations` Tool을 실행하여 Firestore에 저장된 대화 기록을 조회한 결과이다.
+
+![MCP Conversations](screenshots/19_mcp_conversations.png)
+
+### 7. Tool 호출이 필요한 이유
+AI가 항상 모든 데이터를 시스템 프롬프트에 미리 포함하면
+불필요한 토큰 사용량이 늘어나고 최신 데이터 반영에도 불리할 수 있다.
+Function Calling과 MCP Tool을 사용하면
+사용자의 질문에 필요한 경우에만 실제 저장 데이터를 조회할 수 있다.
+이를 통해 다음과 같은 장점을 얻을 수 있다.
+- 필요한 시점에 실제 데이터 조회
+- 데이터 변경 시 최신 값 반영
+- 프롬프트 크기 감소
+- AI와 서비스 로직 분리
+- 외부 MCP 클라이언트에서도 동일 기능 재사용 가능
 
 
 ## 기술 스택
