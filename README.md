@@ -379,16 +379,24 @@ pip install -r backend/requirements.txt
 
 ### 4. 환경 변수 설정
 
-backend/.env.example을 참고하여 환경 변수를 설정합니다.
-예시:
+`backend/.env.example`을 참고하여 환경 변수를 설정합니다.
+
+백엔드 예시:
 
 ```env
 OPENAI_API_KEY=your_api_key
 OPENAI_BASE_URL=https://copa.codyssey.kr/v1
 OPENAI_MODEL=gpt-5-mini
+FIREBASE_SERVICE_ACCOUNT_JSON=your_firebase_service_account_json
+ALLOWED_ORIGINS=https://gametrend-ai.vercel.app
 ```
 
-Firebase 서비스 계정 정보도 별도로 설정해야 합니다.
+프론트엔드 배포 환경 변수 예시:
+
+```env
+API_BASE_URL=https://gametrend-ai-api.onrender.com
+```
+
 실제 API Key와 Firebase 인증 정보는 GitHub에 업로드하지 않습니다.
 
 ### 5. FastAPI 서버 실행
@@ -469,8 +477,17 @@ POST /api/chat
 
 ## AI 분석 방식
 
-백엔드는 Firestore에 저장된 플레이어 데이터를 기반으로 요약 정보를 생성합니다.
-AI에게는 전체 365개의 데이터를 그대로 전달하는 대신 다음과 같은 분석 요약 정보를 컨텍스트로 제공합니다.
+GameTrend AI의 AI 채팅은 저장된 데이터를 기반으로 답변하며,
+사용자의 질문에 따라 필요한 도구를 Function Calling 방식으로 호출합니다.
+
+예를 들어 플레이어 수 요약, 최근 7일 평균, 이전 7일 평균,
+변화율, 현재 추세 등이 필요한 질문에는
+`get_data_summary` 도구를 호출하여 실제 저장 데이터를 조회합니다.
+
+대화 기록 관련 질문에는
+`get_conversations` 도구를 호출하여 저장된 대화 목록을 조회합니다.
+
+데이터 요약에는 다음 정보가 포함됩니다.
 
 - 전체 데이터 개수
 - 데이터 기간
@@ -482,7 +499,12 @@ AI에게는 전체 365개의 데이터를 그대로 전달하는 대신 다음�
 - 변화율
 - 현재 추세
 
-따라서 전체적인 추세 분석에는 적합하지만, 임의의 특정 날짜 플레이어 수와 같은 질문은 현재 구조에서 제한될 수 있습니다.
+AI는 도구에서 반환된 실제 데이터를 근거로 최종 답변을 생성하며,
+저장된 데이터에 없는 내용은 추측하지 않도록 구성했습니다.
+
+현재 요약 기반 도구는 전체적인 추세 분석에는 적합하지만,
+임의의 특정 날짜 플레이어 수처럼 원시 데이터 단건 조회가 필요한 질문은
+지원 범위가 제한될 수 있습니다.
 
 
 ## 분석 리포트
