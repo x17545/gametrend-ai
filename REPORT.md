@@ -142,6 +142,25 @@ GameTrend AI 웹 애플리케이션에서는 분석된 데이터를 기반으로
 
 이를 통해 일반적인 AI 응답이 아니라 실제 프로젝트 데이터에 기반한 분석 결과를 받을 수 있도록 구현하였다.
 
+### 실제 서비스 AI 분석 결과
+
+Vercel에 배포된 실제 서비스에서
+최근 7일 평균과 이전 7일 평균을 비교하도록 질문한 결과입니다.
+
+![Deployed AI Chat](screenshots/21_deployed_ai_chat.png)
+
+최근 7일 평균은 765,669.71명,
+이전 7일 평균은 745,013.71명으로 확인되었으며,
+약 2.77% 증가한 것으로 분석되었습니다.
+
+### 배포 API 확인
+
+Render에 배포된 FastAPI 서버의 Swagger UI에서
+AI 채팅, 데이터 조회·요약, 대화 기록 관련 API가
+정상적으로 제공되는 것을 확인했습니다.
+
+![Deployed Swagger](screenshots/22_deployed_swagger.png)
+
 
 ## 8. 웹 애플리케이션 구현
 
