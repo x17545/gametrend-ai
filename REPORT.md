@@ -179,6 +179,19 @@ GameTrend AI는 다음 기능을 제공한다.
 - 모바일 반응형 UI
 - Light / Dark Mode
 
+### Firestore 데이터 저장 확인
+
+Firebase Firestore에서는 플레이어 데이터와 AI 대화 기록을
+각각 `data`, `conversations` 컬렉션으로 분리하여 저장하였다.
+
+`data` 컬렉션은 PUBG 플레이어 시계열 데이터와 통계 계산에 사용하며,
+`conversations` 컬렉션은 AI 대화 제목, 메시지, 생성 시각을 저장하는 데 사용한다.
+
+아래 화면은 실제 Firestore의 `conversations` 컬렉션에
+사용자와 AI의 대화 기록이 저장된 모습이다.
+
+![Firestore Collections](screenshots/23_firestore_collections.png)
+
 프론트엔드는 Vercel에 배포하였으며, 백엔드는 Render에 배포하였다.
 
 **Frontend**
